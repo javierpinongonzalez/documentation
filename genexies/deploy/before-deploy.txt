@@ -1,0 +1,5 @@
+1. ask for release version number (Adrián/Diana)
+
+2. set all JIRA tasks of new release with version number got on #1
+
+3. create task on project's production deploy epic with deploy instructions (use latest deploys as template)

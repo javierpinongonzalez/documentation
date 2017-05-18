@@ -1,0 +1,36 @@
+1. accepted log levels
+    - EMERG     0
+    - ALERT     1
+    - CRIT      2
+    - ERR       3
+    - WARNING   4
+    - NOTICE    5
+    - INFO      6
+    - DEBUG     7
+
+2. priority
+    - cms_xul > database > factories.yml
+
+3. cms_xul
+    - A site_param placed on each portal_app called 'log_level'
+    - i.e: log_level  |  INFO
+
+4. database
+    - Table called 'Variables' placed on 'content' schema
+    - Table attributes:
+        + id: pk, autoincrement
+        + module: portal_app
+        + name: 'log_level'
+        + value: log level wanted
+    - i.e: 69 | api | log_level | DEBUG
+    - queries:
+        + check if there is a log_level set:
+            SELECT * FROM Variables WHERE module = '<portal_app>' AND name = 'log_level'
+        + set new log_level
+            INSERT INTO Variables (module, name, value) VALUES ('<portal_app>', 'log_level', '<log-level>')
+        + remove log_level
+            DELETE FROM Variables WHERE module = '<portal_app>' AND name = 'log_level'
+
+5. factories.yml
+    - file located on each application folder inside app: app/<portal_app>/config/factories.yml
+    - i.e: app/api/config/factories.yml

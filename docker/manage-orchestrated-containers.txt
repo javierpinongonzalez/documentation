@@ -1,0 +1,13 @@
+1. go to folder where docker-compose.yml file is
+
+2. check orchestrated containers
+    - docker-compose ps
+
+3. add container to orchestra
+    - docker-compose up -d <service-name>
+
+4. stop container from orchestra
+    - docker-compose stop <container-name>
+
+5. remove container from orchestra
+    - docker-compose rm -f <container-name>

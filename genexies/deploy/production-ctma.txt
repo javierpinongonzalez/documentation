@@ -1,0 +1,18 @@
+1. change to branch master
+    - git checkout master
+
+2. get into HEAD on branch master
+    - git fetch
+    - git pull
+
+3. get war file
+    - mvn clean package -DskipTests -P production
+
+4. upload war to Artifactory
+    - deploy tab
+    - select war on ctma/core-api-gce
+    - click on upload
+
+5. set path correctly
+
+6. click on 'Deploy artifact'

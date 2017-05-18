@@ -1,0 +1,30 @@
+1. change to 'Integration' branch
+    - git checkout Integration
+
+2. get into Integration HEAD
+    - git fetch
+    - git pull
+
+3. create a branch for the new release
+    - git branch <branch-name> (i.e. new release-2.8.2)
+    - git checkout <branch-name>
+
+4. change pom's version
+    - ./set-version.sh <new-version-number>
+
+5. commit changes to new branch
+    - git commit -a -m '<commit-message>'
+
+6. get into BitBucket and make PR of new branch to Integration
+
+7. wait to merge
+
+--------------------- permissions needed ----------------------
+
+8. PR from Integration to master
+
+9. merge
+
+---------------------------------------------------------------
+
+10. depends on project

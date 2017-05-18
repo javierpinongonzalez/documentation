@@ -1,0 +1,3 @@
+-D<var-path> = <value>
+
+example: -Dcom.simulators.packs.dataset=production
