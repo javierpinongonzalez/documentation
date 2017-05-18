@@ -1,0 +1,5 @@
+1. do ssh
+    - ssh root@<host-dns>(i.e:web101.genexies.net)
+
+2. clean cache
+    - cd /srv/www/genexies12 && /etc/init.d/apache2 stop && killall -9 apache2 && rm -rf cache/* && php symfony cc && cd ../genexies/ && rm -rf cache/* && php symfony cc && /etc/init.d/apache2 start && /etc/init.d/memcached restart && cd /srv/www/genexies12

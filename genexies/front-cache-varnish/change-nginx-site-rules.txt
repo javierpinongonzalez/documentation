@@ -1,0 +1,11 @@
+1. do ssh to front-host
+    - ssh root@<host-dns>(i.e:front101.genexies.net)
+
+2. go to /etc/nginx/sites-enabled
+
+3. modify site file (i.e: 'emocion' for emocion.genexies.net)
+    - NOTE: check that changed file get 'listen' field set to IP where code is deployed (i.e: if we deployed the code in web101.genexies.net, we'd do an ifconfig on such host to get IP value)
+
+4. restart nginx
+    - /etc/init.d/nginx stop
+    - /etc/init.d/nginx start

@@ -1,0 +1,20 @@
+1. do ssh to front-host
+    - ssh root@<host-dns>(i.e:front101.genexies.net)
+
+2. go to /usr/local/gnx-front/current/vcl
+
+3. remove current backend file
+    - rm backends.vcl
+
+3. do symlink of file to be used as backend.vcl
+    - ln -s <vcl-file>(i.e:backends-staging-101.template.vcl) backends.vcl
+
+4. stop varnish service
+    - service varnish stop
+
+5. run script to start varnish
+    - /etc/monit/varnish_start_monit.sh
+
+6. check backend.list is ok
+    - varnishadm
+    - backend.list

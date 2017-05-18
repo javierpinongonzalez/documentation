@@ -3,6 +3,6 @@
     - pass: *******
 
 2. hosts-dns
-    - dockerom1.cluster.genexies.net
-    - dockerom2.cluster.genexies.net
+    - dockerom01.cluster.genexies.net
+    - dockerom02.cluster.genexies.net
 
