@@ -1,0 +1,12 @@
+1. check changed files and file changes
+    - git status
+    - git diff <file-path>
+
+2. add files to commit
+    - git add <file-path> (. for add all)
+
+3. do commit
+    - git commit -m '<commit-message>'
+
+4. do push
+    -git push origin <branch-name>

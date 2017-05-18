@@ -18,4 +18,4 @@ Options:
         +MYSQL_USER: create a mysql user
         +MYSQL_PASSWORD: set mysql user's password
     --detach: avoids to block cli
-    <image-name>:<image-version>: image's name and image's version to be launched
+    <image-name>:<tag-name>: image's name and image's tag to be launched

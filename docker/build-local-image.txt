@@ -1,0 +1,22 @@
+1. check if container running the image already exists
+    - docker ps -a
+
+2. stop it if is running
+    - docker stop <container-name>
+
+3. remove it if exists
+    - docker rm <container-name>
+
+4. check if image already exists
+    - docker images
+
+5. delete it if exists
+    - docker rmi <image-name>:<tag-name>
+
+6. go to project folder which image will be built
+
+7. rebuild project
+    - mvn clean package (for maven based projects)
+
+8. build docker image
+    - docker build -t <image-name>:<tag-name> -f <Dockerfile-path> .

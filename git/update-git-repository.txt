@@ -1,0 +1,16 @@
+1. go to repository path
+
+2. check repository changes
+    - git status
+
+3. discard local branch changes
+    - git reset --hard
+
+4. download repository changes but not integrate into HEAD
+    - git fetch
+
+5. change to branch to be updated
+    - git checkout <branch-name>
+
+6. update local repository
+    - git pull origin <branch-name>
