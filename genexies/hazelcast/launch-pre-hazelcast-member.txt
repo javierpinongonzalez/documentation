@@ -1,0 +1,16 @@
+1. Access to docker102 by ssh
+    - ssh root@docker102.cluster.genexies.net
+    - pass: 34htj25
+
+2. go to hazelcast mancenter repository folder
+    - cd ~/work/infrastructure-docker/hazelcast-mancenter
+
+3. check that env_file variable is set to "staging" in docker-compose.yml
+
+4. gcloud login
+    - docker login -e da@igual.com -u _token -p "$(gcloud auth print-access-token)" https://eu.gcr.io
+
+5. run docker container
+    - docker-compose up -d
+
+6. do again for docker103

@@ -1,0 +1,14 @@
+1. clone repository
+    - ctma
+
+2. add to file /etc/default/docker
+    - DOCKER_OPTS="-H 127.0.0.1:2376 -H unix://var/run/docker.sock"
+
+3. go to ctma repository folder and rebuild the project
+    - mvn clean package -DskipTests
+
+4. build docker image
+    - docker build -t ctma-core:dev
+
+5. run docker container
+    - docker run -e JPDA_ADDRESS=172.17.0.2:8000 -p 8080:8080 -p 8000:8000/tcp -v "/home/<user-name>/<repository-folder>/ctma/core-api-gce/taret/core-api-gce-<ctma-version> -DEVELOPMENT.war:/usr/local/tomcat/webapps/ROOT.war" ctma-core:dev

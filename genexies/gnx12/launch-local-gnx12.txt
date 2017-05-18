@@ -1,0 +1,21 @@
+1. clone repositories
+    - infrastructure-docker
+    - genexies10
+    - genexies12
+
+2. go to symfony folder in infrastructure-docker
+
+3. modify "volumes" section in docker-compose.yml
+    - /home/<user-name>/<repository-folder>/genexies12:/srv/www/genexies12
+    - /home/<user-name>/<repository-folder>/genexies10:/srv/www/genexies
+
+4. build docker image and run it in a container
+    - docker-compose up --build -d
+
+5. access the container
+    - docker exec -it <container-name> bash
+
+6. execute scripts
+    - cd /
+    - ./build-project-1.0.sh
+    - ./build-project-1.2.sh

@@ -1,0 +1,11 @@
+1. Access to docker101 by ssh
+    - ssh root@docker101.cluster.genexies.net
+    - pass: 34htj25
+
+2. go to hazelcast mancenter repository folder
+    - cd ~/work/infrastructure-docker/hazelcast-mancenter
+
+3. check that env_file variable is set to "staging" in docker-compose.yml
+
+4. run docker container
+    - docker-compose up -d

@@ -1,0 +1,21 @@
+Command:
+
+docker run --name service-android-notifications-db \
+--publish=127.0.0.1:3306:3306 \
+--env MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+--env MYSQL_DATABASE=notificationsApk \
+--env MYSQL_ROOT_PASSWORD= \
+--detach=true \
+mysql:5.6
+
+Options:
+    --name: set container's name
+    --publish: establish container's ip and exposed port.
+    --env: set container's environment variable
+        +MYSQL_ALLOW_EMPTY_PASSWORD: allow empty password
+        +MYSQL_DATABASE: schema's name
+        +MYSQL_ROOT_PASSWORD: set root's password
+        +MYSQL_USER: create a mysql user
+        +MYSQL_PASSWORD: set mysql user's password
+    --detach: avoids to block cli
+    <image-name>:<image-version>: image's name and image's version to be launched
