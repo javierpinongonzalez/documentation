@@ -1,0 +1,10 @@
+1. go to deployment-scripts project folder
+
+2. run docker container
+    - docker run --name=deployment-scripts --detach=true --volume="/home/<user-name>/.ssh":root/.ssh deployment-scripts sh -c "tail -f /dev/null"
+
+3. deploy gnx10
+    - docker exec -it deployment-scripts sh -c "cap genexies10 HOSTS=<reserved-host>(i.e:web101.genexies.net) -s app=<app-name>(i.e:music) -s yml=<env>(i.e:staging) -s branch=<branch-name>(i.e:master)
+
+4. deploy gnx12
+    - docker exec -it deployment-scripts sh -c "cap genexies12 HOSTS=<reserved-host>(i.e:web101.genexies.net) -s app=<app-name>(i.e:music) -s yml=<env>(i.e:staging) -s branch=<branch-name>(i.e:master)

@@ -1,0 +1,3 @@
+1. check free hosts on confluence. Search: 'asignación de entornos'
+
+2. reserve host by JIRA task

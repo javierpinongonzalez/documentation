@@ -1,0 +1,13 @@
+1. go to front-cache-varnish project
+
+2. check if config/deploy/staging.rb is assigned to the host we've reserved
+
+3. deploy varnish
+    - bundle exec cap staging deploy -s user=root -s branch=<branch-name>(i.e:master)
+
+4. do ssh to the host we've reserved
+    - ssh root@<host-dns>(i.e:front101.genexies.net)
+
+5. check services managed by varnish
+    - varnishadm
+    - backend.list

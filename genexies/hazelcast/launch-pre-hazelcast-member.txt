@@ -1,6 +1,6 @@
 1. Access to docker102 by ssh
     - ssh root@docker102.cluster.genexies.net
-    - pass: 34htj25
+    - pass: *******
 
 2. go to hazelcast mancenter repository folder
     - cd ~/work/infrastructure-docker/hazelcast-mancenter
