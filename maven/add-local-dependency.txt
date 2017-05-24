@@ -1,0 +1,5 @@
+Command:
+    - mvn install:install-file -Dfile=<relative-path-to-file> -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
+
+Example:
+    - mvn install:install-file -Dfile=deployment-with-docker/zapcat-1.3-SNAPSHOT.jar -DgroupId=org.kjkoster -DartifactId=zapcat -Dversion=1.3-SNAPSHOT -Dpackaging=jar

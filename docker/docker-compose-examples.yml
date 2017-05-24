@@ -1,0 +1,232 @@
+--------------------------------------------- EXAMPLE 1 ---------------------------------------------
+
+version: '2'
+
+############################################################################################################################################
+################################################################ SERVICES ##################################################################
+############################################################################################################################################
+
+services:
+  ################################################################# NGINX ##################################################################
+  nginx:
+    image: front-cache-nginx:dev
+    env_file: ../front-cache/development.env
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      development:
+        aliases:
+          - billing-om-pre.genexies.net
+    depends_on:
+      - "varnish"
+
+  ################################################################# VARNISH ################################################################
+  varnish:
+    image: front-cache-varnish:dev
+    env_file: ../front-cache/development.env
+    expose:
+      - "81"
+    networks:
+      - development
+    extra_hosts: # For all the services not added yet.
+      - "fashionbip foodie mascotas novias : 127.0.0.1"
+      - "cdag cdag_games : 127.0.0.1"
+      - "portals : 127.0.0.1"
+      - "shortener : 127.0.0.1"
+      - "stats : 127.0.0.1"
+      - "sessions : 127.0.0.1"
+      - "om_griff_notifications : 127.0.0.1"
+      - "elastic : 127.0.0.1"
+      - "rabbitmq : 127.0.0.1"
+    depends_on:
+      - "genexies12"
+      - "service-billing"
+
+  ############################################################### GENEXIES12 ###############################################################
+  genexies12:
+    image: genexies12:dev
+    env_file: ../symfony/testing.env
+    ports:
+      - "80:80"
+      - "443:443"
+    hostname: genexies.net
+    networks:
+      development:
+        aliases:
+          - genexies12_games
+    extra_hosts:
+      - "sql01.genexies.net sql02.genexies.net sql03.genexies.net sql04.genexies.net sqlpre.genexies.net:192.168.50.52"
+    volumes:
+      - /Users/genexies/code/genexies12:/srv/www/genexies12
+      - /Users/genexies/code/genexies10:/srv/www/genexies
+    depends_on:
+      - "memcache"
+      - "service-billing"
+
+  ############################################################ SERVICE BILLING #############################################################
+  service-billing:
+    image: service-billing:dev
+    expose:
+      - "10015"
+    env_file: ../service-billing/simulation.env
+    labels:
+      - net.genexies.logging=logspout
+    networks:
+      development:
+        aliases:
+          - billing_om
+    depends_on:
+      - "service-billing-db"
+      - "hazelcast-member"
+      - "service-om-billing-simulator"
+
+  ############################################################ HAZELCAST CACHE #############################################################
+
+  hazelcast-member:
+    image: eu.gcr.io/genexies-net/hazelcast-member:latest
+    expose:
+      - "5701"
+    env_file: ../hazelcast-member/development.env
+    networks:
+      development:
+        aliases:
+          - hazelcast-cache
+
+  ########################################################## SERVICE BILLING DB ############################################################
+  service-billing-db:
+    image: mysql:5.6
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=service_billing
+      - MYSQL_USER=service_billing
+      - MYSQL_PASSWORD=testing
+    networks:
+      development:
+        aliases:
+          - mysql_db
+
+  ###################################################### SERVICE BILLING SIMULATOR #########################################################
+  service-om-billing-simulator:
+    image: eu.gcr.io/genexies-net/service-om-billing-simulator:1.0.1
+    expose:
+      - "20001"
+    env_file: ../service-om-billing-simulator/development.env
+    networks:
+      development:
+        aliases:
+          - om-billing-simulator
+
+  ################################################################ MEMCACHE ################################################################
+  memcache:
+    image: memcached:1.4
+    expose:
+      - "11211"
+    networks:
+      - development
+
+  ############################################################## ELASTICSEARCH #############################################################
+  elasticsearch:
+    build: built_in_here/elk/elasticsearch
+    image: elasticsearch:dev
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+      - "8000:8000" # Python server for "site plugins" (deprecated)
+      - "9000:9000" # Cerebro
+    networks:
+      - development
+
+  ################################################################ LOGSTASH ################################################################
+  logstash:
+    build: built_in_here/elk/logstash/
+    image: logstash:dev
+    container_name: logstash
+    expose:
+      - "5000/udp"
+    networks:
+      - development
+
+  ################################################################# KIBANA #################################################################
+  kibana:
+    build: built_in_here/elk/kibana
+    image: kibana:dev
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - development
+
+  ################################################################# LOGSPOUT ###############################################################
+  logspout:
+    build: built_in_here/logspout
+    image: logspout:dev
+    container_name: logspout
+    environment:
+      - "ROUTE_URIS=logstash://logstash:5000?filter.labels=net.genexies.logging:logspout"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    restart: on-failure
+    networks:
+      - development
+
+  ############################################################# DB API GENERATOR ###########################################################
+  db-api-generator:
+    build: built_in_here/db-api-generator
+    image: db-api-generator
+    container_name: db-api-generator
+    networks:
+      - development
+
+  ################################################### DB API GENERATOR AUXILIARY DATABASE ##################################################
+  db-api-generator-aux-db:
+    image: mysql:5.6
+    container_name: db-api-generator-aux-db
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Apass01
+    networks:
+      - development
+
+  ############################################################ PLAYKIOSK API #############################################################
+  playkiosk-api:
+    image: playkiosk-api:dev
+    ports:
+      - "10017:8080"
+    env_file: ../playkiosk-api/development.env
+    labels:
+      - net.genexies.logging=logspout
+    networks:
+      development:
+        aliases:
+          - playkiosk-api
+    depends_on:
+      - "playkiosk-api-db"
+
+  ########################################################## PLAYKIOSK API DB ############################################################
+  playkiosk-api-db:
+    image: mysql:5.6
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=playkiosk
+      - MYSQL_USER=playkiosk
+      - MYSQL_PASSWORD=playkiosk
+    networks:
+      development:
+        aliases:
+          - playkiosk_db
+
+############################################################################################################################################
+############################################################### NETWORKING #################################################################
+############################################################################################################################################
+
+networks:
+  development:
+
+--------------------------------------------- EXAMPLE 1 ---------------------------------------------
