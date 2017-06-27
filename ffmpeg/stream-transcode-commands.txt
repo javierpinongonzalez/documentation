@@ -1,0 +1,41 @@
+1. gpu transcode
+    - cli
+        ffmpeg -y -vsync 0 -hwaccel cuvid -i rtmp://127.0.0.1:1935/src/test \
+            -c:a copy -c:v h264_nvenc -b:v 128K -f flv rtmp://127.0.0.1:1935/hls/low \
+            -c:a copy -c:v h264_nvenc -b:v 256k -f flv rtmp://127.0.0.1:1935/hls/mid \
+            -c:a copy -c:v h264_nvenc -b:v 512K -f flv rtmp://127.0.0.1:1935/hls/hi \
+            -c copy -f flv rtmp://127.0.0.1:1935/hls/src
+    - nginx
+        ffmpeg -y -vsync 0 -hwaccel cuvid -i rtmp://127.0.0.1:1935/src/$name
+            -c:a copy -c:v h264_nvenc -b:v 128K -f flv rtmp://127.0.0.1:1935/hls/$name_low
+            -c:a copy -c:v h264_nvenc -b:v 256k -f flv rtmp://127.0.0.1:1935/hls/$name_mid
+            -c:a copy -c:v h264_nvenc -b:v 512K -f flv rtmp://127.0.0.1:1935/hls/$name_hi
+            -c copy -f flv rtmp://127.0.0.1:1935/hls/$name_src;
+
+//TODO: need revision --keyint
+2. latency optimized gpu transcode
+    - nginx
+        exec ffmpeg -y -vsync -1 -async 1 -hwaccel cuvid -i rtmp://127.0.0.1:1935/src/$name
+            -c:a copy -c:v h264_nvenc -b:v 256K -tune zerolatency -g 120 -analyzeduration 100 -probesize 100 -f flv rtmp://127.0.0.1:1935/hls/$name_low
+            -c:a copy -c:v h264_nvenc -b:v 768k -tune zerolatency -g 120 -analyzeduration 100 -probesize 100 -f flv rtmp://127.0.0.1:1935/hls/$name_mid
+            -c:a copy -c:v h264_nvenc -b:v 1024K -tune zerolatency -g 120 -analyzeduration 100 -probesize 100 -f flv rtmp://127.0.0.1:1935/hls/$name_hi;
+
+    - cli
+         ffmpeg -hwaccel cuvid -i rtmp://127.0.0.1:1935/src/test \
+            -c:a copy -c:v h264_nvenc -b:v 256K -framerate 30 -g 60 -crf 25 -f flv rtmp://127.0.0.1:1935/hls/test_low \
+            -c:a copy -c:v h264_nvenc -b:v 768k -framerate 30 -g 60 -crf 25 -f flv rtmp://127.0.0.1:1935/hls/test_mid \
+            -c:a copy -c:v h264_nvenc -b:v 1024K -framerate 30 -g 60 -crf 25 -f flv rtmp://127.0.0.1:1935/hls/test_hi
+
+3. cpu transcode
+    - cli
+        ffmpeg -i rtmp://127.0.0.1:1935/src/test \
+            -c:a copy -b:a 32k  -c:v libx264 -b:v 128K -f flv rtmp://127.0.0.1:1935/hls/low \
+            -c:a copy -b:a 64k  -c:v libx264 -b:v 256k -f flv rtmp://127.0.0.1:1935/hls/mid \
+            -c:a copy -b:a 128k -c:v libx264 -b:v 512K -f flv rtmp://127.0.0.1:1935/hls/hi \
+            -c copy -f flv rtmp://127.0.0.1:1935/hls/src
+    - nginx
+        ffmpeg -i rtmp://127.0.0.1:1935/src/$name
+            -c:a copy -b:a 32k  -c:v libx264 -b:v 128K -f flv rtmp://127.0.0.1:1935/hls/$name_low
+            -c:a copy -b:a 64k  -c:v libx264 -b:v 256k -f flv rtmp://127.0.0.1:1935/hls/$name_mid
+            -c:a copy -b:a 128k -c:v libx264 -b:v 512K -f flv rtmp://127.0.0.1:1935/hls/$name_hi
+            -c copy -f flv rtmp://127.0.0.1:1935/hls/$name_src;
