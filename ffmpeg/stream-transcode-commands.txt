@@ -16,9 +16,9 @@
 2. latency optimized gpu transcode
     - nginx
         exec ffmpeg -y -vsync -1 -async 1 -hwaccel cuvid -i rtmp://127.0.0.1:1935/src/$name
-            -c:a copy -c:v h264_nvenc -b:v 256K -tune zerolatency -g 120 -analyzeduration 100 -probesize 100 -f flv rtmp://127.0.0.1:1935/hls/$name_low
-            -c:a copy -c:v h264_nvenc -b:v 768k -tune zerolatency -g 120 -analyzeduration 100 -probesize 100 -f flv rtmp://127.0.0.1:1935/hls/$name_mid
-            -c:a copy -c:v h264_nvenc -b:v 1024K -tune zerolatency -g 120 -analyzeduration 100 -probesize 100 -f flv rtmp://127.0.0.1:1935/hls/$name_hi;
+            -c:a copy -c:v h264_nvenc -b:v 256K -framerate 30 --keyint 60 -f flv rtmp://127.0.0.1:1935/hls/$name_low
+            -c:a copy -c:v h264_nvenc -b:v 768k -framerate 30 --keyint 60 -f flv rtmp://127.0.0.1:1935/hls/$name_mid
+            -c:a copy -c:v h264_nvenc -b:v 1024K -framerate 30 --keyint 60 -f flv rtmp://127.0.0.1:1935/hls/$name_hi;
 
     - cli
          ffmpeg -hwaccel cuvid -i rtmp://127.0.0.1:1935/src/test \

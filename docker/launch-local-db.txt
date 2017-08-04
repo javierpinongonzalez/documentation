@@ -1,10 +1,21 @@
 Command:
 
+//NOTIFICATIONS DB
 docker run --name service-android-notifications-db \
 --publish=127.0.0.1:3306:3306 \
 --env MYSQL_ALLOW_EMPTY_PASSWORD=yes \
 --env MYSQL_DATABASE=notificationsApk \
 --env MYSQL_ROOT_PASSWORD= \
+--detach=true \
+mysql:5.6
+
+//PLAYKIOSK DB
+docker run --name playkiosk-db \
+--publish=127.0.0.1:3306:3306 \
+--env MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+--env MYSQL_DATABASE=playkiosk \
+--env MYSQL_USER=playkiosk \
+--env MYSQL_PASSWORD=playkiosk \
 --detach=true \
 mysql:5.6
 
