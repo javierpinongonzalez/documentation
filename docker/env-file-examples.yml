@@ -1,0 +1,13 @@
+############# EXAMPLE 1 #############
+SPRING_PROFILE=staging
+
+############# EXAMPLE 2 #############
+SPRING_PROFILE=simulation
+SPRING_APPLICATION_JSON={"server":{"port":"10015"}}
+
+############# EXAMPLE 3 #############
+SPRING_PROFILE=staging
+CACHE_CLUSTER_NAME=service-billing
+CACHE_CLUSTER_PASS=service-billing-pre
+CACHE_CLUSTER_MEMBERS_FIRST=docker102.cluster.genexies.net:5701
+CACHE_CLUSTER_MEMBERS_SECOND=docker103.cluster.genexies.net:5701
